@@ -241,7 +241,7 @@
       var username = document.getElementById("usuario").value;
       var password = document.getElementById("clave").value;;
 
-      if (username == "anfez2003@gmail.com" && password == "laroca.64")
+      if (username == "anfez2003@gmail.com" && password == "1456789")
       {
         location.href = 'productos.html'
       }
