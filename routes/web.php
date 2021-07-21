@@ -16,3 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::group(['prefix' => 'usuario'], function()
+{
+    Route::get('/', 'UsuarioController@list');
+    Route::get('/{idUsuario}', 'UsuarioController@info');
+    Route::post('/', 'UsuarioController@add');
+    Route::post('/{idUsuario}', 'UsuarioController@edit');
+
+});
+
+Route::resource('index', "mostrar_index");
+
+Route::get ('esferos' , 'mostrar_esferos@esferos');
+
+
+
