@@ -37,8 +37,8 @@
                 </div>
                 <div id="menu1" class="menu">
                     <a  href="{{url('usuario')}}" class="d-block text-dark p-3" ><i class="icon ion-md-person mr-1 lead"></i>Usuario</a>
+                    <a  href="{{url('eps') }}" class="d-block text-dark p-3" ><i class="icon ion-md-person mr-1 lead"></i>EPS</a>
                     <a  href="{{url('empleado') }}" class="d-block text-dark p-3" ><i class="icon ion-md-person mr-1 lead"></i>Empleado</a>
-                    <a  href="{{url('cliente') }}" class="d-block text-dark p-3" ><i class="icon ion-md-person mr-1 lead"></i>Cliente</a>
                     <a  href="categorias.html" class="d-block text-dark p-3" ><i class="icon ion-md-reorder mr-1 lead"></i>Categorias</a>
                     <a  href="#" class="d-block text-dark p-3" ><i class="icon ion-md-cart mr-1 lead"></i>Domicilios</a>
                 </div>
@@ -68,88 +68,6 @@
                     </div>
                 </nav>
 
-                <!-- Modal Registrar -->
-                <div class="container">
-                    <div class="modal fade bd-example-modal-lg" id="registarEPSModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 style="text-align: center;" id="tituloRegistrarEPS">Registrar EPS</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info">
-                                        <form id="NuevaEPS" action="">
-                                            @csrf
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="NEPS">Nombre EPS:</label>
-                                                    <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Registrar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal Actualizar -->
-                <div class="container">
-                    <div class="modal fade bd-example-modal-lg" id="ActualizarEPSModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 style="text-align: center;" id="tituloActualizarEPS">Actualizar EPS</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info">
-                                        <form id="NuevaEPS" action="">
-                                            @csrf
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="NEPS">Nombre EPS:</label>
-                                                    <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                                </div>
-                                            </div>
-
-                                            <label>Estado:</label>
-                                            <p>0 = Incativo</p>
-                                            <p>1 = Activo</p>
-                                            <select name="txtEst" required class="form-control">
-                                                <option>0</option>
-                                                <option selected>1</option>
-                                            </select>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Actualizar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="content">
                     <section class="py-3">
                         <div class="container">
@@ -167,7 +85,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h1 style="text-align: center; color: #000;"><strong><h3>Usuario</h3></strong></h1>
+                                            <h1 style="text-align: center; color: #000;"><strong><h3>Actualizar cliente</h3></strong></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -177,12 +95,73 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <ul>
-                                                <li><strong>Id Usuario:</strong>{{$usuario->idUsuario}}</li>
-                                                <li><strong>Rol:</strong> {{$usuario->idRol}}</li>
-                                                <li><strong>Usuario:</strong> {{$usuario->usuario}}</li>
-                                                <li><strong>Clave:</strong> {{$usuario->clave}}</li>
-                                            </ul>
+                                            <form method="POST" action="{{ url('cliente/' . $cliente->idCli) }}">
+                                                @method('PUT')
+                                                @csrf
+                                                <div class="form-group">
+                                                  <label for="CodCli">Codigo cliente:</label>
+                                                  <input value="{{$cliente->codCli}}" type="text" class="form-control" id="CodCli" name="CodCli" placeholder="Codigo cliente">
+                                                </div>
+
+                                                <div class="form-row">
+                                                  <div class="form-group col-md-6">
+                                                    <label for="Nombre">Nombre:</label>
+                                                    <input value="{{$cliente->nombres}}" type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Nombre">
+                                                  </div>
+
+                                                  <div class="form-group col-md-6">
+                                                    <label for="Apellido">Apellido:</label>
+                                                    <input value="{{$cliente->apellidos}}" type="text" class="form-control" id="Apellido" name="Apellido" placeholder="Apellido">
+                                                  </div>
+
+                                                </div>
+
+                                                <div class="form-row">
+
+                                                  <div class="form-group col-md-6">
+                                                  <label>Tipo de documento:</label>
+                                                    <select id="TipDoc" name="TipDoc" class="form-control" required>
+                                                        <option selected>C.C</option>
+                                                        <option >C.E</option>
+                                                        <option >T.I</option>
+                                                        <option >Pasaporte</option>
+                                                    </select>
+                                                  </div>
+
+                                                  <div class="form-group col-md-6">
+                                                    <label for="Cedula">Cedula:</label>
+                                                    <input value="{{$cliente->cedula}}" type="number" class="form-control" id="Cedula" name="Cedula" placeholder="Cedula">
+                                                  </div>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <label for="Tel">Telefono:</label>
+                                                  <input value="{{$cliente->tel}}" type="number" class="form-control" id="Tel" name="Tel" placeholder="Telefono">
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <label for="Correo">Correo:</label>
+                                                  <input value="{{$cliente->email}}" type="email" class="form-control" id="Correo" name="Correo" placeholder="Correo">
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <label for="Dirección">Dirección:</label>
+                                                  <input value="{{$cliente->direccion}}" type="varchar" class="form-control" id="Dirección" name="Dirección" placeholder="Dirección">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input value="{{$cliente->estado}}" type="hidden" class="form-control" id="EstCli" name="EstCli" value="1" >
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <label for="IdUsuario">Id usuario:</label>
+                                                  <input value="{{$cliente->idUsuario}}" type="number" class="form-control" id="IdUsuario" name="IdUsuario" placeholder="Id usuario" readonly>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                                                <td><a href="{{url('cliente') }}" type="button" class="btn btn-success">Atras</a></td>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -211,10 +190,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-
-
 
 
 

@@ -167,7 +167,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h1 style="text-align: center; color: #000;"><strong><h3>Usuario</h3></strong></h1>
+                                            <h1 style="text-align: center; color: #000;"><strong><h3>EPS</h3></strong></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -177,11 +177,9 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
+                                            <h1><strong>EPS:</strong> {{ $eps->NombreEPS}} </h1>
                                             <ul>
-                                                <li><strong>Id Usuario:</strong>{{$usuario->idUsuario}}</li>
-                                                <li><strong>Rol:</strong> {{$usuario->idRol}}</li>
-                                                <li><strong>Usuario:</strong> {{$usuario->usuario}}</li>
-                                                <li><strong>Clave:</strong> {{$usuario->clave}}</li>
+                                                <li><strong>Estado</strong>{{ $eps->estado}}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -211,10 +209,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-
-
 
 
 

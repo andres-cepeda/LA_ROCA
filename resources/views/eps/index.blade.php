@@ -10,8 +10,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+
+
     <!-- Styles -->
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
@@ -81,19 +85,15 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="alert alert-info">
-                                        <form id="NuevaEPS" action="">
+                                        <form id="NuevaEPS" method="POST" action="{{ url('eps') }}">
                                             @csrf
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="NEPS">Nombre EPS:</label>
-                                                    <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                                </div>
+                                            <div class="form-group">
+                                                <label for="NEPS">Nombre EPS:</label>
+                                                <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
                                             </div>
 
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                                </div>
+                                            <div class="form-group">
+                                                <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
                                             </div>
 
                                             <button type="submit" class="btn btn-primary">Registrar</button>
@@ -118,19 +118,18 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="alert alert-info">
-                                        <form id="NuevaEPS" action="">
+                                        <form id="ActualizarEPS"  method="POST" action="{{ url('eps') }}">
                                             @csrf
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="NEPS">Nombre EPS:</label>
-                                                    <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                                </div>
+
+                                            <div class="form-group ">
+                                                <label for="NEPS">Nombre EPS:</label>
+                                                <input type="text" class="form-control" id="NEPS_edit" name="NEPS_edit" placeholder="Nombre EPS">
                                             </div>
 
                                             <label>Estado:</label>
                                             <p>0 = Incativo</p>
                                             <p>1 = Activo</p>
-                                            <select name="txtEst" required class="form-control">
+                                            <select name="txtEst_edit" id="txtEst_edit" required class="form-control" disabled>
                                                 <option>0</option>
                                                 <option selected>1</option>
                                             </select>
@@ -141,7 +140,7 @@
                                                 </div>
                                             </div>
 
-                                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                                            <button type="submit" class="btn btn-primary" >Actualizar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -167,7 +166,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h1 style="text-align: center; color: #000;"><strong><h3>Usuario</h3></strong></h1>
+                                            <h1 style="text-align: center; color: #000;"><strong><h3>EPS</h3></strong></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -177,12 +176,44 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <ul>
-                                                <li><strong>Id Usuario:</strong>{{$usuario->idUsuario}}</li>
-                                                <li><strong>Rol:</strong> {{$usuario->idRol}}</li>
-                                                <li><strong>Usuario:</strong> {{$usuario->usuario}}</li>
-                                                <li><strong>Clave:</strong> {{$usuario->clave}}</li>
-                                            </ul>
+                                            <a data-toggle="modal" data-target="#registarEPSModal" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nueva EPS</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            @if (session("mensaje_exito"))
+                                                <div class="alert alert-success">
+                                                    <strong>{{ session("mensaje_exito") }}</strong>
+                                                </div>
+                                            @endif
+                                            @if (session("mensaje_exito1"))
+                                                <div class="alert alert-info">
+                                                    <strong>{{ session("mensaje_exito1") }}</strong>
+                                                </div>
+                                            @endif
+                                            <table id="eps" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr style="text-align: center">
+                                                        <th><strong>Nombre EPS</strong></th>
+                                                        <th><strong>Editar</strong></th>
+                                                        <th><strong>Eliminar</strong></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ( $eps as $eps )
+                                                        <tr class="table-Light" style="text-align: center">
+                                                        <td><a href="{{url('eps/'.$eps->idEPS) }}">{{$eps->NombreEPS}}</a></td>
+                                                        <td><a href="{{url('eps/'.$eps->idEPS.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
+                                                        <td><a href="{{url('eps/'.$eps->idEPS) }}" type="button" class="btn btn-danger"><i class="icon ion-md-trash"></i></a></td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -209,12 +240,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!--<script>
+    function editar_EPS(idEPS)
+    {
+        $.ajax({
+            type: "GET",
+            url: "/eps/"+idEPS,
+            success: function(data)
+            {
+                $('#NEPS_edit').val(data.NombreEPS);
+                $('#txtEst_edit').val(data.estado);
+                //alert(data.idUsuario);
+            }
+        });
+    }
+</script>-->
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+
+<script src=" {{asset('js/eps.js')}}"></script>
 </body>
 </html>
-
-
-
-
 
 
 

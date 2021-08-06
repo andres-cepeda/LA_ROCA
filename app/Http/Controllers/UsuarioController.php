@@ -45,8 +45,6 @@ class UsuarioController extends Controller
         DB::table('usuario')->where('idUsuario',$request->input('idUsuario_edit'))->update($ActualizarUsuario);
 
         echo "Actualización realizada con exito!";
-
-
     }
 
 

@@ -31,5 +31,12 @@ Route::resource('index', "mostrar_index");
 
 Route::get ('esferos' , 'mostrar_esferos@esferos');
 
+Route::resource('eps','EpsController');
+Route::resource('cliente','ClienteController');
+Route::resource('empleado','EmpleadoController');
+
+
+
+
 
 
