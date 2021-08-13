@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Empleado;
 use App\EPS;
 use App\Usuario;
@@ -29,6 +30,43 @@ class EmpleadoController extends Controller
 
     public function store(Request $request)
     {
+        //Proceso para validar datos (laravel)
+        //1. Establecer la reglas de validacion en un arreglo
+        $reglas=[
+            "CodEmp" => 'required|alpha|max:20',
+            "Nombre" => 'required|alpha|max:50',
+            "Apellido" => 'required|alpha|max:50',
+            "TipDoc" => 'required',
+            "Cedula" => 'required|alpha_num|max:20',
+            "Tel" => 'required|alpha_num|max:10',
+            "Correo" => 'required|email',
+            "Dirección" => 'required|alpha_dash|max:50',
+            "IdUsuario" => 'required',
+            "IdEPS" => 'required',
+        ];
+
+        //1.1. Establecer mensajes de validacion
+        $mensajes=[
+            "required" => "Campo requerido",
+            "alpha" => "Solo letras",
+            "alpha_num" => "Solo numeros",
+            "email" => "Debe ser un email",
+            "max" => "Debe tener máximo :max caracteres"
+        ];
+
+
+
+        //2. Crear el objeto epecial para validacion
+        $validador = Validator::make($request->all(), $reglas, $mensajes);
+
+        //3. realizar la validacion utilizando el validador(fails)
+        if($validador->fails())//True por que falla
+        {
+            //zona de fallo
+            return redirect('empleado')
+            ->withErrors($validador)
+            ->withInput();
+        }
 
         //Traer el maxio Id que este en la tabla cliente
         $maxEmp = Empleado::all()->max('idEmp');
@@ -56,23 +94,67 @@ class EmpleadoController extends Controller
     public function show($id)
     {
         $empleado = Empleado::find($id);
+        $usuario = Usuario::where('idUsuario' ,'=', $id)->get();//Error no selecciona el id del usuario sino que hace la consulta con el id del empleado
+        $eps = EPS::where('Estado' ,'like', 1)->get();
 
-        return view('empleado.show')->with("empleado", $empleado);
+        return view('empleado.show', compact('usuario'), compact('eps'))->with("empleado", $empleado);
     }
 
     public function edit($id)
     {
         //Seleccionar el recurso (singleton) con el id del parametro
         $empleado = Empleado::find($id);
+        $eps = EPS::where('Estado' ,'like', 1)->get();
+        $usuarios = Usuario::where('idRol' ,'Not like', 3)->get();
+
 
         //Pasar ese cliente a la vista para presentarse en el formulario
-        return view('empleado.edit')->with('empleado', $empleado);
+        return view('empleado.edit', compact('eps'), compact('usuarios'))->with('empleado', $empleado);
     }
 
     public function update(Request $request, $id)
     {
+
+        //Proceso para validar datos (laravel)
+        //1. Establecer la reglas de validacion en un arreglo
+        $reglas=[
+            "CodEmp" => 'required|alpha_dash|max:20',
+            "Nombre" => 'required|max:50',
+            "Apellido" => 'required|max:50',
+            "TipDoc" => 'required',
+            "Cedula" => 'required|alpha_num|max:20',
+            "Tel" => 'required|alpha_num|max:10',
+            "Correo" => 'required|email',
+            "Dirección" => 'required|max:50',
+            "IdUsuario" => 'required',
+            "IdEPS" => 'required',
+        ];
+
+        //1.1. Establecer mensajes de validacion
+        $mensajes=[
+            "required" => "Campo requerido",
+            "alpha" => "Solo letras",
+            "alpha_num" => "Solo numeros",
+            "email" => "Debe ser un email",
+            "max" => "Debe tener máximo :max caracteres"
+        ];
+
+
+
+        //2. Crear el objeto epecial para validacion
+        $validador = Validator::make($request->all(), $reglas, $mensajes);
+
+        //3. realizar la validacion utilizando el validador(fails)
+        if($validador->fails())//True por que falla
+        {
+            //zona de fallo
+            return redirect('empleado/6/edit')
+            ->withErrors($validador)
+            ->withInput();
+        }
         //Seleccion del recurso a modificar
         $empleado = Empleado::find($id);
+
 
         //actualizo el estado del cliente
         //En virtud de los datos que vengan del formlario

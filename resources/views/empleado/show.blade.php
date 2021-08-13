@@ -104,8 +104,11 @@
                                                 <li><strong>Email: </strong>{{ $empleado->email}}</li>
                                                 <li><strong>Direccion: </strong>{{ $empleado->direccion}}</li>
                                                 <li><strong>Estado: </strong>{{ $empleado->estado}}</li>
-                                                <li><strong>Id Usuario: </strong>{{ $empleado->idUsuario}}</li>
-                                                <li><strong>Id EPS: </strong>{{ $empleado->idEPS}}</li>
+                                                @foreach ($usuario as $usuario)<li value="{{ $empleado->idEmp}}"><strong>Id Usuario: </strong>
+
+                                                    {{ $usuario->usuario}}
+                                                    </li>@endforeach
+                                                <li ><strong>Id EPS: </strong>{{ $empleado->idEPS}}</li>
                                             </ul>
                                             <td><a href="{{url('empleado') }}" type="button" class="btn btn-success">Atras</a></td>
                                         </div>

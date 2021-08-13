@@ -83,18 +83,21 @@
                                             @csrf
                                             <div class="form-group">
                                               <label for="CodCli">Codigo empleado:</label>
-                                              <input type="text" class="form-control" id="CodEmp" name="CodEmp" placeholder="Codigo empleado">
+                                              <input value="{{ old('CodEmp') }}" type="text" class="form-control" id="CodEmp" name="CodEmp" placeholder="Codigo empleado">
+                                              <strong class="text-danger"> {{ $errors->first('CodEmp') }} </strong>
                                             </div>
 
                                             <div class="form-row">
                                               <div class="form-group col-md-6">
                                                 <label for="Nombre">Nombre:</label>
-                                                <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Nombre">
+                                                <input value="{{ old('Nombre') }}" type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Nombre">
+                                                <strong class="text-danger"> {{ $errors->first('Nombre') }} </strong>
                                               </div>
 
                                               <div class="form-group col-md-6">
                                                 <label for="Apellido">Apellido:</label>
-                                                <input type="text" class="form-control" id="Apellido" name="Apellido" placeholder="Apellido">
+                                                <input value="{{ old('Apellido') }}" type="text" class="form-control" id="Apellido" name="Apellido" placeholder="Apellido">
+                                                <strong class="text-danger"> {{ $errors->first('Apellido') }} </strong>
                                               </div>
 
                                             </div>
@@ -104,33 +107,39 @@
                                               <div class="form-group col-md-6">
                                               <label>Tipo de documento:</label>
                                                 <select id="TipDoc" name="TipDoc" class="form-control" required>
-                                                    <option selected>C.C</option>
+                                                    <option >--Tipo documento--</option>
+                                                    <option >C.C</option>
                                                     <option >C.E</option>
                                                     <option >T.I</option>
                                                     <option >Pasaporte</option>
                                                 </select>
+                                                <strong class="text-danger"> {{ $errors->first('TipDoc') }} </strong>
                                               </div>
 
                                               <div class="form-group col-md-6">
                                                 <label for="Cedula">Cedula:</label>
-                                                <input type="number" class="form-control" id="Cedula" name="Cedula" placeholder="Cedula">
+                                                <input value="{{ old('Cedula') }}" type="number" class="form-control" id="Cedula" name="Cedula" placeholder="Cedula">
+                                                <strong class="text-danger"> {{ $errors->first('Cedula') }} </strong>
                                               </div>
 
                                             </div>
 
                                             <div class="form-group">
                                               <label for="Tel">Telefono:</label>
-                                              <input type="number" class="form-control" id="Tel" name="Tel" placeholder="Telefono">
+                                              <input value="{{ old('Tel') }}" type="number" class="form-control" id="Tel" name="Tel" placeholder="Telefono">
+                                              <strong class="text-danger"> {{ $errors->first('Tel') }} </strong>
                                             </div>
 
                                             <div class="form-group">
                                               <label for="Correo">Correo:</label>
-                                              <input type="email" class="form-control" id="Correo" name="Correo" placeholder="Correo">
+                                              <input value="{{ old('Correo') }}" type="email" class="form-control" id="Correo" name="Correo" placeholder="Correo">
+                                              <strong class="text-danger"> {{ $errors->first('Correo') }} </strong>
                                             </div>
 
                                             <div class="form-group">
                                               <label for="Dirección">Dirección:</label>
-                                              <input type="varchar" class="form-control" id="Dirección" name="Dirección" placeholder="Dirección">
+                                              <input value="{{ old('Dirección') }}" type="varchar" class="form-control" id="Dirección" name="Dirección" placeholder="Dirección">
+                                              <strong class="text-danger"> {{ $errors->first('Dirección') }} </strong>
                                             </div>
 
                                             <div class="form-group">
@@ -140,23 +149,25 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                 <label for="IdUsuario">Usuario:</label>
-                                                <select name="IdUsuario" id="IdUsuario" class="form-control">
+                                                <select name="IdUsuario" id="IdUsuario" class="form-control" required>
                                                     <option selected>--Escoja el usuario--</option>
                                                 @foreach ($usuarios as $usuario)
                                                     <option value="{{$usuario->idUsuario}}">{{$usuario->usuario}}</option>
                                                 @endforeach
                                                 </select>
+                                                <strong class="text-danger"> {{ $errors->first('IdUsuario') }} </strong>
                                                 <!--<input type="number" class="form-control" id="IdUsuario" name="IdUsuario" placeholder="Id usuario">-->
-                                                </div>
+                                            </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label for="IdEPS">EPS:</label>
-                                                    <select name="IdEPS" id="IdEPS" class="form-control">
+                                                    <select name="IdEPS" id="IdEPS" class="form-control" required>
                                                         <option selected>--Escoja la EPS--</option>
                                                     @foreach ( $eps as $eps )
                                                         <option value="{{$eps->idEPS}}">{{$eps->NombreEPS}}</option>
                                                     @endforeach
                                                     </select>
+                                                    <strong class="text-danger"> {{ $errors->first('IdEPS') }} </strong>
                                                     <!--<input type="number" class="form-control" id="IdEPS" name="IdEPS" placeholder="Id EPS"-->
                                                 </div>
                                             </div>
