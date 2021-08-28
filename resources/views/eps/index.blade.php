@@ -72,83 +72,6 @@
                     </div>
                 </nav>
 
-                <!-- Modal Registrar -->
-                <div class="container">
-                    <div class="modal fade bd-example-modal-lg" id="registarEPSModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 style="text-align: center;" id="tituloRegistrarEPS">Registrar EPS</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info">
-                                        <form id="NuevaEPS" method="POST" action="{{ url('eps') }}">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label for="NEPS">Nombre EPS:</label>
-                                                <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Registrar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal Actualizar -->
-                <div class="container">
-                    <div class="modal fade bd-example-modal-lg" id="ActualizarEPSModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 style="text-align: center;" id="tituloActualizarEPS">Actualizar EPS</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info">
-                                        <form id="ActualizarEPS"  method="POST" action="{{ url('eps') }}">
-                                            @csrf
-
-                                            <div class="form-group ">
-                                                <label for="NEPS">Nombre EPS:</label>
-                                                <input type="text" class="form-control" id="NEPS_edit" name="NEPS_edit" placeholder="Nombre EPS">
-                                            </div>
-
-                                            <label>Estado:</label>
-                                            <p>0 = Incativo</p>
-                                            <p>1 = Activo</p>
-                                            <select name="txtEst_edit" id="txtEst_edit" required class="form-control" disabled>
-                                                <option>0</option>
-                                                <option selected>1</option>
-                                            </select>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary" >Actualizar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="content">
                     <section class="py-3">
                         <div class="container">
@@ -176,7 +99,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <a data-toggle="modal" data-target="#registarEPSModal" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nueva EPS</strong></a>
+                                            <a href="{{ url('eps/create') }}" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nueva EPS</strong></a>
                                         </div>
                                     </div>
                                 </div>
@@ -201,16 +124,35 @@
                                                     <tr style="text-align: center">
                                                         <th><strong>Nombre EPS</strong></th>
                                                         <th><strong>Editar</strong></th>
-                                                        <th><strong>Eliminar</strong></th>
+                                                        <th><strong>Estado</strong></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ( $eps as $eps )
+                                                    @if($eps->estado==1 || $eps->estado==2)
                                                         <tr class="table-Light" style="text-align: center">
-                                                        <td><a href="{{url('eps/'.$eps->idEPS) }}">{{$eps->NombreEPS}}</a></td>
-                                                        <td><a href="{{url('eps/'.$eps->idEPS.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
-                                                        <td><a href="{{url('eps/'.$eps->idEPS) }}" type="button" class="btn btn-danger"><i class="icon ion-md-trash"></i></a></td>
+                                                            <td><a href="{{url('eps/'.$eps->idEPS) }}">{{$eps->NombreEPS}}</a></td>
+                                                            <td><a href="{{url('eps/'.$eps->idEPS.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
+                                                            <td>
+                                                                @switch ($eps->estado)
+                                                                    @case(null)
+                                                                        <strong class="alert-info">Usuario sin estado
+                                                                            <a href="{{ url('eps/'.$eps->idEPS.'/estado') }}">
+                                                                                Asignar estado
+                                                                            </a>
+                                                                        </strong>
+                                                                    @break
+                                                                    @case(1)
+                                                                        <a href="{{ url('eps/'.$eps->idEPS.'/estado') }}" type="button" class="btn btn-danger">Inhabilitar </a>
+                                                                    @break
+
+                                                                    @case(2)
+                                                                        <a href="{{ url('eps/'.$eps->idEPS.'/estado') }}"type="button" class="btn btn-success">Habilitar </a>
+                                                                    @break
+                                                                @endswitch
+                                                            </td>
                                                         </tr>
+                                                    @endif
                                                     @endforeach
                                                 </tbody>
                                             </table>

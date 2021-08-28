@@ -252,7 +252,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <a data-toggle="modal" data-target="#registarEmpleadoModal" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo empleado</strong></a>
+                                            <a href="{{ url('empleado/create') }}" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo empleado</strong></a>
                                         </div>
                                     </div>
                                 </div>
@@ -280,21 +280,40 @@
                                                         <th><strong>Tel</strong></th>
                                                         <th><strong>Email</strong></th>
                                                         <th><strong>Editar</strong></th>
-                                                        <th><strong>Eliminar</strong></th>
+                                                        <th><strong>Estado</strong></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ( $empleados as $empleado )
-                                                    <tr class="table-Light" style="text-align: center">
-                                                    <td><a href="{{url('empleado/'.$empleado->idEmp) }}">{{$empleado->nombres}} {{$empleado->apellidos}}</a></td>
 
-                                                    <td> {{$empleado->cedula}}</td>
-                                                    <td> {{$empleado->tel}}</td>
-                                                    <td> {{$empleado->email}}</td>
+                                                        <tr class="table-Light" style="text-align: center">
+                                                            <td><a href="{{url('empleado/'.$empleado->idEmp) }}">{{$empleado->nombres}} {{$empleado->apellidos}}</a></td>
 
-                                                    <td><a href="{{url('empleado/'.$empleado->idEmp.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
-                                                    <td><a href="{{url('empleado/'.$empleado->idEmp.'/destroy') }}" type="button" class="btn btn-danger"><i class="icon ion-md-trash"></i></a></td>
-                                                    </tr>
+                                                            <td> {{$empleado->cedula}}</td>
+                                                            <td> {{$empleado->tel}}</td>
+                                                            <td> {{$empleado->email}}</td>
+
+                                                            <td><a href="{{url('empleado/'.$empleado->idEmp.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
+                                                            <td>
+                                                                @switch ($empleado->estado)
+                                                                    @case(null)
+                                                                        <strong class="alert-info">empleado sin estado
+                                                                            <a href="{{ url('empleado/'.$empleado->idEmp .'/estado') }}">
+                                                                                Asignar estado
+                                                                            </a>
+                                                                        </strong>
+                                                                    @break
+                                                                    @case(1)
+                                                                        <a href="{{ url('empleado/'.$empleado->idEmp .'/estado') }}" type="button" class="btn btn-danger">Inhabilitar </a>
+                                                                    @break
+
+                                                                    @case(2)
+                                                                        <a href="{{ url('empleado/'.$empleado->idEmp .'/estado') }}"type="button" class="btn btn-success">Habilitar </a>
+                                                                    @break
+                                                                @endswitch
+                                                            </td>
+                                                        </tr>
+
                                                     @endforeach
                                                 </tbody>
                                               </table>

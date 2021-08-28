@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+
     <!-- Styles -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
@@ -71,49 +74,6 @@
           </div>
         </nav>
 
-         <!-- Modal Registrar -->
-         <div class="container">
-            <div class="modal fade bd-example-modal-lg" id="registarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 style="text-align: center;" id="tituloRegistrarUsuario">Registrar usuario</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="alert alert-info">
-                      <form id="NuevoUsuario" action="">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="hidden" class="form-control" id="idUsuario" >
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="Rol">Rol:</label>
-                                <input type="number" class="form-control" id="Rol" name="Rol" placeholder="Rol">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="Usuario">Usuario:</label>
-                                <input type="text" class="form-control" id="Usuario" name="Usuario" placeholder="Usuario">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="Clave">Clave:</label>
-                          <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Clave">
-                        </div>
-                        <input type="hidden" name="_token" id="token" value="{{csrf_token()}}">
-
-                        <button type="submit" class="btn btn-primary" onclick="New_Usuario()">Registrar</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
         <div id="content">
           <section class="py-3">
@@ -132,22 +92,49 @@
                         <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                            <h1 style="text-align: center; color: #000;"><strong><h3>Usuarios</h3></strong></h1>
+                            <h1 style="text-align: center; color: #000;"><strong><h3>Actualizar usuario</h3></strong></h1>
                             </div>
                         </div>
                         </div>
                     </div>
+
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                <a data-toggle="modal" data-target="#registarUsuarioModal" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo usuario</strong></a>
+                                    <form method="POST" action="{{ url('usuario/' . $usuario->idUsuario) }}" >
+                                        @method('PUT')
+                                        @csrf
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <input type="hidden" class="form-control" id="idUsuario_edit" name="idUsuario_edit">
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="Rol_edit">Rol:</label>
+                                                <input value="{{$usuario->idRol}}" type="number" class="form-control" id="Rol_edit" name="Rol" placeholder="Rol">
+                                                <strong class="text-danger"> {{ $errors->first('Rol') }} </strong>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="Usuario_edit">Usuario:</label>
+                                                <input value="{{$usuario->usuario}}" type="text" class="form-control" id="Usuario_edit" name="Usuario" placeholder="Usuario" readonly>
+                                                <strong class="text-danger"> {{ $errors->first('Usuario') }} </strong>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Clave_edit">Clave:</label>
+                                            <input value="{{$usuario->clave}}" type="password" class="form-control" id="Clave_edit" name="Clave" placeholder="Clave">
+                                            <strong class="text-danger"> {{ $errors->first('Clave') }} </strong>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                                        <a href="{{url('usuario') }}" type="button" class="btn btn-success">Atras</a>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
               </div>
           </section>
 
@@ -173,6 +160,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+
 </body>
 </html>
 

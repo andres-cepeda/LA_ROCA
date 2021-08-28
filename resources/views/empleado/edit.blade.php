@@ -134,7 +134,7 @@
 
                                                   <div class="form-group col-md-6">
                                                     <label for="Cedula">Cedula:</label>
-                                                    <input value="{{$empleado->cedula}}" type="number" class="form-control" id="Cedula" name="Cedula" placeholder="Cedula">
+                                                    <input value="{{$empleado->cedula}}" type="number" class="form-control" id="Cedula" name="Cedula" placeholder="Cedula" readonly>
                                                     <strong class="text-danger"> {{ $errors->first('Cedula') }} </strong>
                                                   </div>
 

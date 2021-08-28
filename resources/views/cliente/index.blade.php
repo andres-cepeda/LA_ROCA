@@ -233,7 +233,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <a data-toggle="modal" data-target="#registarClienteModal" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo cliente</strong></a>
+                                            <a href="{{ url('cliente/create') }}" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo cliente</strong></a>
                                         </div>
                                     </div>
                                 </div>
@@ -261,21 +261,40 @@
                                                         <th><strong>Tel</strong></th>
                                                         <th><strong>Email</strong></th>
                                                         <th><strong>Editar</strong></th>
-                                                        <th><strong>Eliminar</strong></th>
+                                                        <th><strong>Estado</strong></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ( $clientes as $cliente )
+                                                    @if($cliente->estado==1 || $cliente->estado==2)
                                                         <tr class="table-Light" style="text-align: center">
-                                                        <td><a href="{{url('cliente/'.$cliente->idCli) }}">{{$cliente->nombres}} {{$cliente->apellidos}}</a></td>
+                                                            <td><a href="{{url('cliente/'.$cliente->idCli) }}">{{$cliente->nombres}} {{$cliente->apellidos}}</a></td>
 
-                                                        <td> {{$cliente->cedula}}</td>
-                                                        <td> {{$cliente->tel}}</td>
-                                                        <td> {{$cliente->email}}</td>
+                                                            <td> {{$cliente->cedula}}</td>
+                                                            <td> {{$cliente->tel}}</td>
+                                                            <td> {{$cliente->email}}</td>
 
-                                                        <td><a href="{{url('cliente/'.$cliente->idCli.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
-                                                        <td><a href="{{url('cliente/'.$cliente->idCli.'/delete') }}" type="button" class="btn btn-danger"><i class="icon ion-md-trash"></i></a></td>
+                                                            <td><a href="{{url('cliente/'.$cliente->idCli.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
+                                                            <td>
+                                                                @switch ($cliente->estado)
+                                                                    @case(null)
+                                                                        <strong class="alert-info">cliente sin estado
+                                                                            <a href="{{ url('cliente/'.$cliente->idCli .'/estado') }}">
+                                                                                Asignar estado
+                                                                            </a>
+                                                                        </strong>
+                                                                    @break
+                                                                    @case(1)
+                                                                        <a href="{{ url('cliente/'.$cliente->idCli .'/estado') }}" type="button" class="btn btn-danger">Inhabilitar </a>
+                                                                    @break
+
+                                                                    @case(2)
+                                                                        <a href="{{ url('cliente/'.$cliente->idCli .'/estado') }}"type="button" class="btn btn-success">Habilitar </a>
+                                                                    @break
+                                                                @endswitch
+                                                            </td>
                                                         </tr>
+                                                    @endif
                                                     @endforeach
                                                 </tbody>
                                             </table>

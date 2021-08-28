@@ -74,95 +74,6 @@
           </div>
         </nav>
 
-         <!-- Modal Registrar -->
-         <div class="container">
-            <div class="modal fade bd-example-modal-lg" id="registarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 style="text-align: center;" id="tituloRegistrarUsuario">Registrar usuario</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="alert alert-info">
-                      <form id="NuevoUsuario" action="">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="hidden" class="form-control" id="idUsuario" >
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="Rol">Rol:</label>
-                                <input type="number" class="form-control" id="Rol" name="Rol" placeholder="Rol">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="Usuario">Usuario:</label>
-                                <input type="text" class="form-control" id="Usuario" name="Usuario" placeholder="Usuario">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="Clave">Clave:</label>
-                          <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Clave">
-                        </div>
-                        <input type="hidden" name="_token" id="token" value="{{csrf_token()}}">
-
-                        <button type="submit" class="btn btn-primary" onclick="New_Usuario()">Registrar</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <!-- Modal Actualizar -->
-        <div class="container">
-            <div class="modal fade bd-example-modal-lg" id="ActualizarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 style="text-align: center;" id="tituloActualizarUsuario">Actualizar usuario</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="alert alert-info">
-                      <form id="ActualizarUsuario" action="">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="hidden" class="form-control" id="idUsuario_edit" name="idUsuario_edit">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="Rol_edit">Rol:</label>
-                                <input type="number" class="form-control" id="Rol_edit" name="Rol_edit" placeholder="Rol">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="Usuario_edit">Usuario:</label>
-                                <input type="text" class="form-control" id="Usuario_edit" name="Usuario_edit" placeholder="Usuario">
-                            </div>
-                        </div>
-                            <div class="form-group">
-                                <label for="Clave_edit">Clave:</label>
-                                <input type="password" class="form-control" id="Clave_edit" name="Clave_edit" placeholder="Clave">
-                            </div>
-                        <input type="hidden" name="_token" id="token" value="{{csrf_token()}}">
-
-
-                        <button type="submit" class="btn btn-primary" onclick="editar_usuario_save()">Actualizar</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         <div id="content">
           <section class="py-3">
             <div class="container">
@@ -189,7 +100,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                <a data-toggle="modal" data-target="#registarUsuarioModal" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo usuario</strong></a>
+                                <a href="{{ url('usuario/create') }}" ><i class="icon ion-md-contacts mr-2 lead"></i><strong>Nuevo usuario</strong></a>
                                 </div>
                             </div>
                         </div>
@@ -199,26 +110,59 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
+                                    @if (session("mensaje_exito"))
+                                        <div class="alert alert-success">
+                                            <strong>{{ session("mensaje_exito") }}</strong>
+                                        </div>
+                                    @endif
+                                    @if (session("mensaje_exito1"))
+                                        <div class="alert alert-info">
+                                            <strong>{{ session("mensaje_exito1") }}</strong>
+                                        </div>
+                                    @endif
                                     <table id="usuario" class="table table-bordered table-striped">
                                         <thead>
                                             <tr style="text-align: center">
-                                                <th><strong>Id Usuario</strong></th>
                                                 <th><strong>Id Rol</strong></th>
                                                 <th><strong>Usuario</strong></th>
                                                 <th><strong>Editar</strong></th>
-                                                <th><strong>Eliminar</strong></th>
+                                                <th><strong>Estado</strong></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ( $usuarios as $usuario )
+                                            @if($usuario->estado==1 || $usuario->estado==2)
                                                 <tr class="table-Light" style="text-align: center">
-                                                <th>{{$usuario->idUsuario}}</th>
-                                                <th>{{$usuario->idRol}}</th>
-                                                <th>{{$usuario->usuario}}</th>
-                                                <th><button onclick="editar_usuario({{$usuario->idUsuario}})" type="button" hre class="btn btn-success"><i class="icon ion-md-create"></i></button></th>
-                                                <th><button type="button" class="btn btn-danger"><i class="icon ion-md-trash"></i></button></th>
-                                            @endforeach
+
+                                                    <!--<th  >$rol->NombreRol}}</th>-->
+
+                                                    <th>{{$usuario->idRol}}</th>
+
+                                                    <th><a href="{{url('usuario/'.$usuario->idUsuario) }}">{{$usuario->usuario}}</a></th>
+
+                                                    <td><a href="{{url('usuario/'.$usuario->idUsuario.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
+
+                                                    <td>
+                                                        @switch ($usuario->estado)
+                                                            @case(null)
+                                                                <strong class="alert-info">Usuario sin estado
+                                                                    <a href="{{ url('usuario/'.$usuario->idUsuario .'/estado') }}">
+                                                                        Asignar estado
+                                                                    </a>
+                                                                </strong>
+                                                            @break
+                                                            @case(1)
+                                                                <a href="{{ url('usuario/'.$usuario->idUsuario .'/estado') }}" type="button" class="btn btn-danger">Inhabilitar </a>
+                                                            @break
+
+                                                            @case(2)
+                                                                <a href="{{ url('usuario/'.$usuario->idUsuario .'/estado') }}"type="button" class="btn btn-success">Habilitar </a>
+                                                            @break
+                                                        @endswitch
+                                                    </td>
                                                 </tr>
+                                                @endif
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -247,59 +191,6 @@
     </div>
   </header>
 
-<script type="text/javascript">
-    function New_Usuario()
-    {
-        let form = $('#NuevoUsuario');
-
-        $.ajax({
-
-            type: "POST",
-            url: "/usuario",
-            data: form.serialize(),
-            success: function(data)
-            {
-                alert(data);
-            }
-        });
-    }
-
-    function editar_usuario(idUsuario)
-    {
-        $.ajax({
-            type: "GET",
-            url: "/usuario/"+idUsuario,
-            success: function(data)
-            {
-                $('#idUsuario_edit').val(data.idUsuario);
-                $('#Rol_edit').val(data.idRol);
-                $('#Usuario_edit').val(data.usuario);
-                $('#Clave_edit').val(data.clave);
-                //alert(data.idUsuario);
-            }
-        });
-
-        $('#ActualizarUsuarioModal').modal('show');
-    }
-
-    function editar_usuario_save()
-    {
-        let form = $('#ActualizarUsuario');
-        let IdUsuario = $('#idUsuario_edit').val();
-
-        $.ajax({
-
-            type: "POST",
-            url: "/usuario/"+IdUsuario,
-            data: form.serialize(),
-            success: function(data)
-            {
-                alert(data);
-            }
-        });
-    }
-
-</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>

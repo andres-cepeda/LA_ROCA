@@ -18,22 +18,25 @@ Route::get('/', function () {
 });
 
 
-Route::group(['prefix' => 'usuario'], function()
-{
-    Route::get('/', 'UsuarioController@list');
-    Route::get('/{idUsuario}', 'UsuarioController@info');
-    Route::post('/', 'UsuarioController@add');
-    Route::post('/{idUsuario}', 'UsuarioController@edit');
-
-});
 
 Route::resource('index', "mostrar_index");
 
 Route::get ('esferos' , 'mostrar_esferos@esferos');
 
 Route::resource('eps','EpsController');
+Route::get('eps/{eps}/estado', 'EpsController@estado');
+
+
 Route::resource('cliente','ClienteController');
+Route::get('cliente/{cliente}/estado', 'ClienteController@estado');
+
+
 Route::resource('empleado','EmpleadoController');
+Route::get('empleado/{empleado}/estado', 'EmpleadoController@estado');
+
+
+Route::resource('usuario','UsuarioController');
+Route::get('usuario/{usuario}/estado', 'UsuarioController@estado');
 
 
 

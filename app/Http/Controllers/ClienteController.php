@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Cliente;
 use App\Usuario;
 
@@ -13,7 +14,7 @@ class ClienteController extends Controller
     public function index()
     {
         //seleccion de recursos
-        $clientes = Cliente::where('Estado' ,'like', 1)->get();
+        $clientes = Cliente::all();
         $usuarios = Usuario::where('idRol' ,'like', 3)->get();
         //retorna recursos
         return view('cliente.index',compact('usuarios'))->with("clientes", $clientes);
@@ -21,11 +22,52 @@ class ClienteController extends Controller
 
     public function create()
     {
-        //
+        $usuarios = Usuario::where('idRol' ,'like', 3)->get();
+        return view('cliente.create', compact('usuarios'));
     }
 
     public function store(Request $request)
     {
+        //Proceso para validar datos (laravel)
+        //1. Establecer la reglas de validacion en un arreglo
+        $reglas=[
+            "CodCli" => 'required|max:20',
+            "Nombre" => 'required|alpha|max:50',
+            "Apellido" => 'required|alpha|max:50',
+            "TipDoc" => 'required',
+            "Cedula" => 'unique:App\Cliente,cedula|required|alpha_num|max:20',
+            "Tel" => 'required|alpha_num|max:10',
+            "Correo" => 'required|email',
+            "Dirección" => 'required|max:50',
+            "IdUsuario" => 'required',
+
+        ];
+
+        //1.1. Establecer mensajes de validacion
+        $mensajes=[
+            "required" => "Campo requerido",
+            "alpha" => "Solo letras",
+            "alpha_num" => "Solo numeros",
+            "email" => "Debe ser un email",
+            "max" => "Debe tener máximo :max caracteres",
+            "unique" => "Documento ya registrado"
+        ];
+
+
+
+        //2. Crear el objeto epecial para validacion
+        $validador = Validator::make($request->all(), $reglas, $mensajes);
+
+        //3. realizar la validacion utilizando el validador(fails)
+        if($validador->fails())//True por que falla
+        {
+            //zona de fallo
+            return redirect('cliente/create')
+            ->withErrors($validador)
+            ->withInput();
+        }
+
+
         //Traer el maxio Id que este en la tabla cliente
         $maxCli = Cliente::all()->max('idCli');
         $maxCli++;
@@ -59,14 +101,54 @@ class ClienteController extends Controller
     {
         //Seleccionar el recurso (singleton) con el id del parametro
         $cliente = Cliente::find($id);
+        $usuarios = Usuario::where('idRol' ,'like', 3)->get();
+
 
         //Pasar ese cliente a la vista para presentarse en el formulario
-        return view('cliente.edit')->with('cliente', $cliente);
+        return view('cliente.edit', compact('usuarios'))->with('cliente', $cliente);
     }
 
 
     public function update(Request $request, $id)
     {
+         //Proceso para validar datos (laravel)
+        //1. Establecer la reglas de validacion en un arreglo
+        $reglas=[
+            "CodCli" => 'required|max:20',
+            "Nombre" => 'required|alpha|max:50',
+            "Apellido" => 'required|alpha|max:50',
+            "TipDoc" => 'required',
+            "Cedula" => 'required|alpha_num|max:20',
+            "Tel" => 'required|alpha_num|max:10',
+            "Correo" => 'required|email',
+            "Dirección" => 'required|max:50',
+            "IdUsuario" => 'required',
+
+        ];
+
+        //1.1. Establecer mensajes de validacion
+        $mensajes=[
+            "required" => "Campo requerido",
+            "alpha" => "Solo letras",
+            "alpha_num" => "Solo numeros",
+            "email" => "Debe ser un email",
+            "max" => "Debe tener máximo :max caracteres"
+        ];
+
+
+
+        //2. Crear el objeto epecial para validacion
+        $validador = Validator::make($request->all(), $reglas, $mensajes);
+
+        //3. realizar la validacion utilizando el validador(fails)
+        if($validador->fails())//True por que falla
+        {
+            //zona de fallo
+            return redirect("cliente/$id/edit")
+            ->withErrors($validador)
+            ->withInput();
+        }
+
         //Seleccion del recurso a modificar
         $cliente = Cliente::find($id);
 
@@ -103,5 +185,31 @@ class ClienteController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function estado($id)
+    {
+        //1. Establcer el estado del usuario (null, 1=activo, 2=inactivo, 0=null)
+        $cliente = Cliente::find($id);
+        switch ($cliente->estado)
+        {
+            case null:$cliente->estado = 1;
+                      $cliente->save();
+                      $mensaje =  "Estado activo asiganado al cliente: $cliente->nombres $cliente->apellidos";
+                      break;
+
+            case 1:$cliente->estado = 2;
+                      $cliente->save();
+                      $mensaje =  "Estado inactivo asiganado al cliente: $cliente->nombres $cliente->apellidos";
+                      break;
+
+            case 2: $cliente->estado = 1;
+                      $mensaje = "Estado actio asignado al cliente: $cliente->nombres $cliente->apellidos";
+                      $cliente->save();
+                      break;
+
+        }
+        //redireccionar a la ruta por defecto (index 'cliente')
+        //con un mesaje de exito
+        return redirect('cliente')->with('mensaje_exito', $mensaje);
     }
 }

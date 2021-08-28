@@ -181,6 +181,7 @@
                                             <ul>
                                                 <li><strong>Estado</strong>{{ $eps->estado}}</li>
                                             </ul>
+                                            <td><a href="{{url('eps') }}" type="button" class="btn btn-success">Atras</a></td>
                                         </div>
                                     </div>
                                 </div>

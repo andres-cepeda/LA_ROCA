@@ -14,7 +14,7 @@ class EmpleadoController extends Controller
     public function index()
     {
         //seleccion de recursos
-        $empleados = Empleado::where('Estado' ,'like', 1)->get();
+        $empleados = Empleado::all();
         $eps = EPS::where('Estado' ,'like', 1)->get();
         $usuarios = Usuario::where('idRol' ,'Not like', 3)->get();
 
@@ -25,7 +25,9 @@ class EmpleadoController extends Controller
 
     public function create()
     {
-        //
+        $usuarios = Usuario::where('idRol' ,'Not like', 3)->get();
+        $eps = EPS::where('Estado' ,'like', 1)->get();
+        return view('empleado.create',  compact('eps'), compact('usuarios'));
     }
 
     public function store(Request $request)
@@ -33,14 +35,14 @@ class EmpleadoController extends Controller
         //Proceso para validar datos (laravel)
         //1. Establecer la reglas de validacion en un arreglo
         $reglas=[
-            "CodEmp" => 'required|alpha|max:20',
+            "CodEmp" => 'required|max:20',
             "Nombre" => 'required|alpha|max:50',
             "Apellido" => 'required|alpha|max:50',
             "TipDoc" => 'required',
-            "Cedula" => 'required|alpha_num|max:20',
+            "Cedula" => 'unique:App\Empleado,cedula|required|alpha_num|max:20',
             "Tel" => 'required|alpha_num|max:10',
             "Correo" => 'required|email',
-            "Dirección" => 'required|alpha_dash|max:50',
+            "Dirección" => 'required|max:50',
             "IdUsuario" => 'required',
             "IdEPS" => 'required',
         ];
@@ -51,7 +53,8 @@ class EmpleadoController extends Controller
             "alpha" => "Solo letras",
             "alpha_num" => "Solo numeros",
             "email" => "Debe ser un email",
-            "max" => "Debe tener máximo :max caracteres"
+            "max" => "Debe tener máximo :max caracteres",
+            "unique" => "Documento ya registrado"
         ];
 
 
@@ -63,7 +66,7 @@ class EmpleadoController extends Controller
         if($validador->fails())//True por que falla
         {
             //zona de fallo
-            return redirect('empleado')
+            return redirect('empleado/create')
             ->withErrors($validador)
             ->withInput();
         }
@@ -118,7 +121,7 @@ class EmpleadoController extends Controller
         //Proceso para validar datos (laravel)
         //1. Establecer la reglas de validacion en un arreglo
         $reglas=[
-            "CodEmp" => 'required|alpha_dash|max:20',
+            "CodEmp" => 'required|max:20',
             "Nombre" => 'required|max:50',
             "Apellido" => 'required|max:50',
             "TipDoc" => 'required',
@@ -148,7 +151,7 @@ class EmpleadoController extends Controller
         if($validador->fails())//True por que falla
         {
             //zona de fallo
-            return redirect('empleado/6/edit')
+            return redirect("empleado/$id/edit")
             ->withErrors($validador)
             ->withInput();
         }
@@ -178,10 +181,33 @@ class EmpleadoController extends Controller
 
     public function destroy($id)
     {
-        //Seleccionar el recurso (singleton) con el id del parametro
-        $empleado = Empleado::find($id);
+        //
+    }
 
-        //Pasar ese cliente a la vista para presentarse en el formulario
-        return view('empleado.edit')->with('empleado', $empleado);
+    public function estado($id)
+    {
+        //1. Establcer el estado del usuario (null, 1=activo, 2=inactivo, 0=null)
+        $empleado = Empleado::find($id);
+        switch ($empleado->estado)
+        {
+            case null:$empleado->estado = 1;
+                      $empleado->save();
+                      $mensaje =  "Estado activo asiganado al empleado: $empleado->nombres $empleado->apellidos";
+                      break;
+
+            case 1:$empleado->estado = 2;
+                      $empleado->save();
+                      $mensaje =  "Estado inactivo asiganado al empleado: $empleado->nombres $empleado->apellidos";
+                      break;
+
+            case 2: $empleado->estado = 1;
+                      $mensaje = "Estado actio asignado al empleado: $empleado->nombres $empleado->apellidos";
+                      $empleado->save();
+                      break;
+
+        }
+        //redireccionar a la ruta por defecto (index 'empleado')
+        //con un mesaje de exito
+        return redirect('empleado')->with('mensaje_exito', $mensaje);
     }
 }

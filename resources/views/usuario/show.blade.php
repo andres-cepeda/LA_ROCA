@@ -68,88 +68,6 @@
                     </div>
                 </nav>
 
-                <!-- Modal Registrar -->
-                <div class="container">
-                    <div class="modal fade bd-example-modal-lg" id="registarEPSModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 style="text-align: center;" id="tituloRegistrarEPS">Registrar EPS</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info">
-                                        <form id="NuevaEPS" action="">
-                                            @csrf
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="NEPS">Nombre EPS:</label>
-                                                    <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Registrar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal Actualizar -->
-                <div class="container">
-                    <div class="modal fade bd-example-modal-lg" id="ActualizarEPSModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 style="text-align: center;" id="tituloActualizarEPS">Actualizar EPS</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info">
-                                        <form id="NuevaEPS" action="">
-                                            @csrf
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="NEPS">Nombre EPS:</label>
-                                                    <input type="text" class="form-control" id="NEPS" name="NEPS" placeholder="Nombre EPS">
-                                                </div>
-                                            </div>
-
-                                            <label>Estado:</label>
-                                            <p>0 = Incativo</p>
-                                            <p>1 = Activo</p>
-                                            <select name="txtEst" required class="form-control">
-                                                <option>0</option>
-                                                <option selected>1</option>
-                                            </select>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <input type="hidden" class="form-control" id="EstEPS" name="EstEPS" value="1" >
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Actualizar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="content">
                     <section class="py-3">
                         <div class="container">
@@ -177,12 +95,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
+                                            <h1><strong>Usuario:</strong> {{ $usuario->usuario}} </h1>
                                             <ul>
-                                                <li><strong>Id Usuario:</strong>{{$usuario->idUsuario}}</li>
-                                                <li><strong>Rol:</strong> {{$usuario->idRol}}</li>
-                                                <li><strong>Usuario:</strong> {{$usuario->usuario}}</li>
-                                                <li><strong>Clave:</strong> {{$usuario->clave}}</li>
+                                                <li><strong>Rol: </strong>{{ $usuario->idRol}}</li>
+                                                <li><strong>Clave: </strong>{{ $usuario->clave}}</li>
                                             </ul>
+                                            <a href="{{url('usuario') }}" type="button" class="btn btn-success">Atras</a>
                                         </div>
                                     </div>
                                 </div>
@@ -211,10 +129,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-
-
 
 
 
