@@ -112,21 +112,38 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="Rol_edit">Rol:</label>
-                                                <input value="{{$usuario->idRol}}" type="number" class="form-control" id="Rol_edit" name="Rol" placeholder="Rol">
+                                                <select name="Rol" id="Rol" class="form-control">
+                                                    @foreach ($rol as $rol )
+                                                        <option value="{{$rol->idRol }}"
+                                                            @if ($rol->idRol  == $usuario->idRol)
+                                                                selected
+                                                            @endif>{{$rol->NombreRol}}</option>
+                                                    @endforeach
+                                                </select>
                                                 <strong class="text-danger"> {{ $errors->first('Rol') }} </strong>
                                             </div>
 
                                             <div class="form-group col-md-6">
                                                 <label for="Usuario_edit">Usuario:</label>
-                                                <input value="{{$usuario->usuario}}" type="text" class="form-control" id="Usuario_edit" name="Usuario" placeholder="Usuario" readonly>
+                                                <input value="{{$usuario->email}}" type="text" class="form-control" id="Usuario_edit" name="Usuario" placeholder="Usuario" readonly>
                                                 <strong class="text-danger"> {{ $errors->first('Usuario') }} </strong>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="Clave_edit">Clave:</label>
-                                            <input value="{{$usuario->clave}}" type="password" class="form-control" id="Clave_edit" name="Clave" placeholder="Clave">
+                                            <input type="password" class="form-control" id="Clave_edit" name="Clave" placeholder="Clave">
                                             <strong class="text-danger"> {{ $errors->first('Clave') }} </strong>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="Clave_confirmation">Clave confirmacion:</label>
+                                            <input type="password" class="form-control" id="Clave_confirmation" name="Clave_confirmation" placeholder="Clave">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control" id="estado" name="estado" value="1" >
+                                        </div>
+
 
                                         <button type="submit" class="btn btn-primary">Actualizar</button>
                                         <a href="{{url('usuario') }}" type="button" class="btn btn-success">Atras</a>

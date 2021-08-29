@@ -8,6 +8,10 @@ use App\EPS;
 
 class EpsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('miautenticacion');
+    }
 
     public function index()
     {

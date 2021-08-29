@@ -67,8 +67,8 @@
               </form>
 
               <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                <a class="d-block text-dark p-3" ><i class="icon ion-md-person mr-4 lead"></i><strong>Andres Cepeda</strong></a>
-                <a href="index.html" class="d-block text-dark p-3 "><i class="icon ion-md-exit mr-4 lead avatar"></i><strong>Cerrar sesión</strong></a>
+                <a class="d-block text-dark p-3" ><i class="icon ion-md-person mr-4 lead"></i><strong>{{ Auth::user()->email}}</strong></a>
+                <a href="{{url('logout')}}" class="d-block text-dark p-3 "><i class="icon ion-md-exit mr-4 lead avatar"></i><strong>Cerrar sesión</strong></a>
               </ul>
             </div>
           </div>
@@ -79,7 +79,7 @@
             <div class="container">
               <div class="row">
                   <div class="col-lg-12">
-                    <h1 style="color: #000000;" class="font-weight-bold mb-0"><strong> Bienvenido Andres</strong></h1>
+                    <h1 style="color: #000000;" class="font-weight-bold mb-0"><strong> Bienvenido {{ Auth::user()->email}}</strong></h1>
                   </div>
               </div>
             </div>
@@ -138,7 +138,7 @@
 
                                                     <th>{{$usuario->idRol}}</th>
 
-                                                    <th><a href="{{url('usuario/'.$usuario->idUsuario) }}">{{$usuario->usuario}}</a></th>
+                                                    <th><a href="{{url('usuario/'.$usuario->idUsuario) }}">{{$usuario->email}}</a></th>
 
                                                     <td><a href="{{url('usuario/'.$usuario->idUsuario.'/edit') }}" type="button" class="btn btn-success"><i class="icon ion-md-create"></i></a></td>
 

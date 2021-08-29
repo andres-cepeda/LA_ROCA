@@ -171,7 +171,7 @@
                                                     <select name="IdUsuario" id="IdUsuario" class="form-control">
                                                     <option selected>--Escoja el usuario--</option>
                                                     @foreach ($usuarios as $usuario)
-                                                        <option value="{{$usuario->idUsuario}}">{{$usuario->usuario}}</option>
+                                                        <option value="{{$usuario->idUsuario}}">{{$usuario->email}}</option>
                                                     @endforeach
                                                     </select>
                                                     <strong class="text-danger"> {{ $errors->first('IdUsuario') }} </strong>

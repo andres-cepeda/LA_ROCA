@@ -257,6 +257,7 @@
                                                 <thead>
                                                     <tr style="text-align: center">
                                                         <th><strong>Nombre </strong></th>
+                                                        <th><strong>Codigo cliente</strong></th>
                                                         <th><strong>Cedula</strong></th>
                                                         <th><strong>Tel</strong></th>
                                                         <th><strong>Email</strong></th>
@@ -270,6 +271,7 @@
                                                         <tr class="table-Light" style="text-align: center">
                                                             <td><a href="{{url('cliente/'.$cliente->idCli) }}">{{$cliente->nombres}} {{$cliente->apellidos}}</a></td>
 
+                                                            <td> {{$cliente->codCli}}</td>
                                                             <td> {{$cliente->cedula}}</td>
                                                             <td> {{$cliente->tel}}</td>
                                                             <td> {{$cliente->email}}</td>

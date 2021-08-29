@@ -123,7 +123,7 @@
 
                                                   <div class="form-group col-md-6">
                                                   <label>Tipo de documento:</label>
-                                                    <select value="{{$empleado->tipoDoc}}" id="TipDoc" name="TipDoc" class="form-control" required>
+                                                    <select id="TipDoc" name="TipDoc" class="form-control" required>
                                                         <option >C.C</option>
                                                         <option >C.E</option>
                                                         <option >T.I</option>
@@ -168,7 +168,10 @@
                                                         <label for="IdUsuario">Usuario:</label>
                                                         <select name="IdUsuario" id="IdUsuario" class="form-control"  required>
                                                             @foreach ($usuarios as $usuario)
-                                                                <option value="{{$usuario->idUsuario}}">{{$usuario->usuario}}</option>
+                                                                <option value="{{$usuario->idUsuario}}"
+                                                                    @if ($usuario->idUsuario == $empleado->idUsuario)
+                                                                        selected
+                                                                    @endif>{{$usuario->email}}</option>
                                                             @endforeach
                                                         </select>
 
@@ -180,7 +183,10 @@
                                                         <label for="IdEPS">EPS:</label>
                                                         <select name="IdEPS" id="IdEPS" class="form-control">
                                                             @foreach ($eps as $eps )
-                                                                <option value="{{$empleado->idEPS}}">{{$eps->NombreEPS}}</option>
+                                                                <option value="{{$eps->idEPS}}"
+                                                                    @if ($eps->idEPS == $empleado->idEPS)
+                                                                        selected
+                                                                    @endif>{{$eps->NombreEPS}}</option>
                                                             @endforeach
                                                         </select>
 

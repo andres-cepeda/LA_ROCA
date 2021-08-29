@@ -10,6 +10,10 @@ use App\Usuario;
 
 class EmpleadoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('miautenticacion');
+    }
 
     public function index()
     {
@@ -107,12 +111,14 @@ class EmpleadoController extends Controller
     {
         //Seleccionar el recurso (singleton) con el id del parametro
         $empleado = Empleado::find($id);
-        $eps = EPS::where('Estado' ,'like', 1)->get();
+        $eps = EPS::all();
         $usuarios = Usuario::where('idRol' ,'Not like', 3)->get();
 
 
         //Pasar ese cliente a la vista para presentarse en el formulario
-        return view('empleado.edit', compact('eps'), compact('usuarios'))->with('empleado', $empleado);
+        return view('empleado.edit')->with('empleado', $empleado)
+                                    ->with('eps',$eps)
+                                    ->with('usuarios',$usuarios);
     }
 
     public function update(Request $request, $id)

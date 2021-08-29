@@ -110,8 +110,13 @@
                                             </div>
 
                                             <div class="form-group col-md-6">
-                                                <label for="Rol">Rol:</label>
-                                                <input value="{{ old('Rol') }}" type="number" class="form-control" id="Rol" name="Rol" placeholder="Rol">
+                                                <label for="IdUsuario">Rol:</label>
+                                                <select name="Rol" id="Rol" class="form-control" required>
+                                                    <option selected>--Escoja el rol--</option>
+                                                    @foreach ($rols as $rol)
+                                                        <option value="{{$rol->idRol }}">{{$rol->NombreRol}}</option>
+                                                    @endforeach
+                                                </select>
                                                 <strong class="text-danger"> {{ $errors->first('Rol') }} </strong>
                                             </div>
 
@@ -124,9 +129,19 @@
 
                                         <div class="form-group">
                                           <label for="Clave">Clave:</label>
-                                          <input value="{{ old('Clave') }}" type="password" class="form-control" id="Clave" name="Clave" placeholder="Clave">
+                                          <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Clave">
                                           <strong class="text-danger"> {{ $errors->first('Clave') }} </strong>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="Clave_confirmation">Clave confirmacion:</label>
+                                            <input type="password" class="form-control" id="Clave_confirmation" name="Clave_confirmation" placeholder="Clave">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control" id="estado" name="estado" value="1" >
+                                        </div>
+
                                         <button type="submit" class="btn btn-primary">Registrar</button>
                                         <a href="{{url('usuario') }}" type="button" class="btn btn-success">Atras</a>
                                     </form>

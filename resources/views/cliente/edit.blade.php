@@ -166,7 +166,10 @@
                                                     <label for="IdUsuario">Usuario:</label>
                                                     <select name="IdUsuario" id="IdUsuario" class="form-control"  required>
                                                         @foreach ($usuarios as $usuario)
-                                                            <option value="{{$usuario->idUsuario}}">{{$usuario->usuario}}</option>
+                                                            <option value="{{$usuario->idUsuario}}"
+                                                                @if ($usuario->idUsuario == $cliente->idUsuario)
+                                                                    selected
+                                                                @endif>{{$usuario->email}}</option>
                                                         @endforeach
                                                     </select>
                                                     <!--<input value="" type="number" class="form-control" id="IdUsuario" name="IdUsuario" placeholder="Id usuario" readonly>-->

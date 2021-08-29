@@ -4,26 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use App\Usuario;
 use App\Rol;
 
 
 class UsuarioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('miautenticacion');
+    }
+
 
     public function index()
     {
         //$usuarios = Usuario::where("estado","=",1)->get();
         $usuarios = Usuario::all();
-        $rol = Rol::all();
+        $rols = Rol::all();
 
-        return view('usuario.index', compact('rol'))->with("usuarios", $usuarios);
+        return view('usuario.index')->with("usuarios", $usuarios)
+                                    ->with("rols",$rols);
     }
 
 
     public function create()
     {
-        return view('usuario.create');
+        $rols = Rol::all();
+
+        return view('usuario.create')->with("rols",$rols);
     }
 
     public function store(Request $request)
@@ -32,8 +41,8 @@ class UsuarioController extends Controller
         //1. Establecer la reglas de validacion en un arreglo
         $reglas=[
             "Rol" => 'required|max:50',
-            "Usuario" => 'unique:App\Usuario,usuario|required|email|max:50',
-            "Clave" => 'required|max:50',
+            "Usuario" => 'unique:App\Usuario,email|required|email|max:50',
+            "Clave" => 'required|max:255|confirmed',
         ];
 
         //1.1. Establecer mensajes de validacion
@@ -41,7 +50,8 @@ class UsuarioController extends Controller
             "required" => "Campo requerido",
             "email" => "Debe ser un email valido",
             "max" => "Debe tener máximo :max caracteres",
-            "unique" => "Nombre de usuario ya registrado"
+            "unique" => "Nombre de usuario ya registrado",
+            "confirmed" => "La contraseña no coinside con la conformacion"
         ];
 
         //2. Crear el objeto epecial para validacion
@@ -63,27 +73,32 @@ class UsuarioController extends Controller
         $nuevoUsua = new Usuario();
         $nuevoUsua->idUsuario = $maxUsua;
         $nuevoUsua->idRol = $request->input("Rol");
-        $nuevoUsua->usuario = $request->input("Usuario");
-        $nuevoUsua->clave = $request->input("Clave");
+        $nuevoUsua->email = $request->input("Usuario");
+        $nuevoUsua->password =  Hash::make($request->input("Clave"));
+        $nuevoUsua->estado = $request->input("estado");
         $nuevoUsua->save();
 
         return redirect('usuario')
-        ->with("mensaje_exito" , "EPS registrada exitosamente");
+        ->with("mensaje_exito" , "Usuario registrada exitosamente");
 
     }
 
     public function show($id)
     {
         $usuario = Usuario::find($id);
+        $rol = Rol::all();
 
-        return view('usuario.show')->with("usuario", $usuario);
+        return view('usuario.show')->with("usuario", $usuario)
+                                   ->with("rol",$rol);
     }
 
     public function edit($id)
     {
         $usuario = Usuario::find($id);
+        $rol = Rol::all();
 
-        return view('usuario.edit')->with("usuario", $usuario);
+        return view('usuario.edit')->with("usuario", $usuario)
+                                   ->with("rol",$rol);
     }
 
     public function update(Request $request, $id)
@@ -93,7 +108,7 @@ class UsuarioController extends Controller
         $reglas=[
             "Rol" => 'required|max:50',
             "Usuario" => 'required|email|max:50',
-            "Clave" => 'required|max:50'
+            "Clave" => 'required|max:255|confirmed'
         ];
 
         //1.1. Establecer mensajes de validacion
@@ -101,7 +116,8 @@ class UsuarioController extends Controller
             "required" => "Campo requerido",
             "email" => "Debe ser un email valido",
             "max" => "Debe tener máximo :max caracteres",
-            "unique" => "Nombre de usuario ya registrado"
+            "unique" => "Nombre de usuario ya registrado",
+            "confirmed" => "La contraseña no coinside con la conformacion"
         ];
 
         //2. Crear el objeto epecial para validacion
@@ -122,8 +138,9 @@ class UsuarioController extends Controller
         //actualizo el estado del cliente
         //En virtud de los datos que vengan del formlario
         $usuario->idRol = $request->input("Rol");
-        $usuario->usuario = $request->input("Usuario");
-        $usuario->clave = $request->input("Clave");
+        $usuario->email = $request->input("Usuario");
+        $usuario->password = Hash::make($request->input("Clave"));
+        $usuario->estado = $request->input("estado");
         $usuario->save();
         return redirect('usuario')->with("mensaje_exito" , "Usuario actualizado exitosamente");
     }

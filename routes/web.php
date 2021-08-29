@@ -23,20 +23,25 @@ Route::resource('index', "mostrar_index");
 
 Route::get ('esferos' , 'mostrar_esferos@esferos');
 
-Route::resource('eps','EpsController');
-Route::get('eps/{eps}/estado', 'EpsController@estado');
+Route::resource('eps','EpsController')->middleware('miautenticacion');
+Route::get('eps/{eps}/estado', 'EpsController@estado')->middleware('miautenticacion');
 
 
-Route::resource('cliente','ClienteController');
-Route::get('cliente/{cliente}/estado', 'ClienteController@estado');
+Route::resource('cliente','ClienteController')->middleware('miautenticacion');
+Route::get('cliente/{cliente}/estado', 'ClienteController@estado')->middleware('miautenticacion');
 
 
-Route::resource('empleado','EmpleadoController');
-Route::get('empleado/{empleado}/estado', 'EmpleadoController@estado');
+Route::resource('empleado','EmpleadoController')->middleware('miautenticacion');
+Route::get('empleado/{empleado}/estado', 'EmpleadoController@estado')->middleware('miautenticacion');
 
 
-Route::resource('usuario','UsuarioController');
-Route::get('usuario/{usuario}/estado', 'UsuarioController@estado');
+Route::resource('usuario','UsuarioController')->middleware('miautenticacion');
+Route::get('usuario/{usuario}/estado', 'UsuarioController@estado')->middleware('miautenticacion');
+
+//Rutas de autenticacion
+Route::get('login', 'Auth\LoginController@form');
+Route::post('login', 'Auth\LoginController@login');
+Route::get('logout', 'Auth\LoginController@logout');
 
 
 

@@ -10,6 +10,10 @@ use App\Usuario;
 class ClienteController extends Controller
 
 {
+    public function __construct()
+    {
+        $this->middleware('miautenticacion');
+    }
 
     public function index()
     {
@@ -17,7 +21,8 @@ class ClienteController extends Controller
         $clientes = Cliente::all();
         $usuarios = Usuario::where('idRol' ,'like', 3)->get();
         //retorna recursos
-        return view('cliente.index',compact('usuarios'))->with("clientes", $clientes);
+        return view('cliente.index')->with("clientes", $clientes)
+                                    ->with("usuarios", $usuarios);
     }
 
     public function create()
@@ -105,7 +110,8 @@ class ClienteController extends Controller
 
 
         //Pasar ese cliente a la vista para presentarse en el formulario
-        return view('cliente.edit', compact('usuarios'))->with('cliente', $cliente);
+        return view('cliente.edit')->with('cliente', $cliente)
+                                   ->with("usuarios",$usuarios);
     }
 
 

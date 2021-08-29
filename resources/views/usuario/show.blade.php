@@ -98,7 +98,8 @@
                                             <h1><strong>Usuario:</strong> {{ $usuario->usuario}} </h1>
                                             <ul>
                                                 <li><strong>Rol: </strong>{{ $usuario->idRol}}</li>
-                                                <li><strong>Clave: </strong>{{ $usuario->clave}}</li>
+                                                <li><strong>Usuario: </strong>{{ $usuario->email}}</li>
+                                                <li><strong>Clave: </strong>{{ $usuario->password}}</li>
                                             </ul>
                                             <a href="{{url('usuario') }}" type="button" class="btn btn-success">Atras</a>
                                         </div>
